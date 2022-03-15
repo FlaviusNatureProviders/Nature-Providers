@@ -1,0 +1,3 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_sale_order_product_list,sale.order.product.list,model_sale_order_product_list,sales_team.group_sale_salesman,1,1,1,0
+access_stock_product_list,stock.product.list,model_stock_product_list,sales_team.group_sale_salesman,1,1,1,0
