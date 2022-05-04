@@ -14,14 +14,23 @@ class SaleOrder(models.Model):
 	
 	def sale_product_view_inherit(self):
 		stock_id=self.env['sale.order.product.list']
+
+		sale_order=self.env['sale.order.line']
 		product_id = self.env['product.product']
-		stock_product_move_id=self.env['stock.move'].search([('partner_id','=',self.partner_id.id)])
+		stock_product_move_id = self.env['stock.move'].search([('partner_id','=',self.partner_id.id)])
+		
+		sale_order_id = self.search([('partner_id','=',self.partner_id.id),('state','=','sale')])
+		sales_id =[ order_id.id for order_id in sale_order_id]
+		line_product_move_id = sale_order.search([('order_id','in',sales_id)])
+
+
 		product_move_list=stock_id.search([('partner_id','=',self.partner_id.id)])
-		product_move_history_list = [st_id.product_id.id for st_id in stock_product_move_id]
+		
+		product_move_history_list = [st_id.product_id.id for st_id in line_product_move_id]
 		stock_product_list=[pt_id.product_id.id for pt_id in product_move_list]
 
 		list_difference = [item for item in product_move_history_list if item not in stock_product_list]
-		
+	
 
 		if list_difference:
 			stock_move_list = product_id.search([('id','in',list_difference)])
