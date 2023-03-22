@@ -17,20 +17,19 @@ class SaleOrder(models.Model):
 
 		sale_order=self.env['sale.order.line']
 		product_id = self.env['product.product']
-		stock_product_move_id = self.env['stock.move'].search([('partner_id','=',self.partner_id.id)])
-		
-		sale_order_id = self.search([('partner_id','=',self.partner_id.id),('state','=','sale')])
-		sales_id =[ order_id.id for order_id in sale_order_id]
-		line_product_move_id = sale_order.search([('order_id','in',sales_id)])
+	
 
-
+		stock_product_move_id=self.env['sale.order.line'].search([('order_id.partner_id','=',self.partner_id.id)])
 		product_move_list=stock_id.search([('partner_id','=',self.partner_id.id)])
-		
-		product_move_history_list = [st_id.product_id.id for st_id in line_product_move_id]
+
+		product_move_history_list = [st_id.product_id.id for st_id in stock_product_move_id]
 		stock_product_list=[pt_id.product_id.id for pt_id in product_move_list]
 
 		list_difference = [item for item in product_move_history_list if item not in stock_product_list]
-	
+
+
+		
+
 
 		if list_difference:
 			stock_move_list = product_id.search([('id','in',list_difference)])
@@ -67,6 +66,33 @@ class SaleOrderProductList(models.Model):
 	sale_order_id = fields.Many2one('sale.order',string="Sales Order")
 	partner_id=fields.Many2one('res.partner',string="Customer")
 	product_image = fields.Binary(string='Product image')
+	product_count = fields.Integer(string="Count")
+
+	
+
+	def add_to_sales_order(self):
+		order_id=self.env.context.get('sale_order')
+		line_env = self.env['sale.order.line']
+		if self.product_count != 0:
+			new_line = line_env.create({
+	                            'product_id': self.product_id.id,
+	                            'order_id': order_id,
+	                            'product_uom_qty':self.product_count
+	                            })            
+			new_line.product_id_change()
+			self.product_count =0
+
+		
+
+
+
+	def add_product(self):
+		self.product_count=self.product_count+1
+
+	def remove_product(self):
+		if self.product_count != 0:
+			self.product_count=self.product_count-1
+
 
 	def add_products(self):
 		line_env = self.env['sale.order.line']
