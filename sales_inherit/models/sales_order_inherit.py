@@ -3,7 +3,7 @@
 
 from collections import defaultdict
 
-from odoo import fields, models
+from odoo import fields, models, api
 from odoo.tools import float_is_zero
 
 
@@ -14,11 +14,7 @@ class SaleOrder(models.Model):
 	
 	def sale_product_view_inherit(self):
 		stock_id=self.env['sale.order.product.list']
-
-		sale_order=self.env['sale.order.line']
 		product_id = self.env['product.product']
-
-	
 
 		stock_product_move_id=self.env['sale.order.line'].search([('order_id.partner_id','=',self.partner_id.id)])
 		product_move_list=stock_id.search([('partner_id','=',self.partner_id.id)])
@@ -52,6 +48,7 @@ class SaleOrder(models.Model):
 		}
 
 
+        
 		
 
 class SaleOrderProductList(models.Model):
@@ -63,7 +60,7 @@ class SaleOrderProductList(models.Model):
 	sale_order_id = fields.Many2one('sale.order',string="Sales Order")
 	partner_id=fields.Many2one('res.partner',string="Customer")
 	product_image = fields.Binary(string='Product image')
-	product_count = fields.Integer(string="Count")
+	product_count = fields.Integer(string="Count", readonly=False)
 
 	
 
@@ -79,14 +76,36 @@ class SaleOrderProductList(models.Model):
 			new_line.product_id_change()
 			self.product_count =0
 
+	def add_quantity_manually(self):
+		return {
+
+            'type': 'ir.actions.act_window',
+
+            'view_type': 'form',
+
+            'view_mode': 'form',
+
+            'view_id' : self.env.ref('sales_inherit.product_quantity_popup').id,
+
+            'res_model': 'sale.order.product.list' ,
+
+            'target': 'new',
+            'res_id':self.id,
+            }
 		
+	def action_close(self):
+		return {
+            'type':'ir.actions.act_window_close'
+        }
 
 
 
 	def add_product(self):
+		print ("haiii bro")
 		self.product_count=self.product_count+1
 
 	def remove_product(self):
+		print ("remove bro")
 		if self.product_count != 0:
 			self.product_count=self.product_count-1
 
