@@ -3,7 +3,7 @@
 
 from collections import defaultdict
 
-from odoo import fields, models
+from odoo import fields, models, api
 from odoo.tools import float_is_zero
 
 
@@ -51,6 +51,7 @@ class SaleOrder(models.Model):
 		}
 
 
+        
 		
 
 class SaleOrderProductList(models.Model):
@@ -62,7 +63,7 @@ class SaleOrderProductList(models.Model):
 	sale_order_id = fields.Many2one('sale.order',string="Sales Order")
 	partner_id=fields.Many2one('res.partner',string="Customer")
 	product_image = fields.Binary(string='Product image')
-	product_count = fields.Integer(string="Count")
+	product_count = fields.Integer(string="Count", readonly=False)
 
 	
 
@@ -79,7 +80,27 @@ class SaleOrderProductList(models.Model):
 			new_line.product_id_change()
 			self.product_count =0
 
+	def add_quantity_manually(self):
+		return {
+
+            'type': 'ir.actions.act_window',
+
+            'view_type': 'form',
+
+            'view_mode': 'form',
+
+            'view_id' : self.env.ref('sales_inherit.product_quantity_popup').id,
+
+            'res_model': 'sale.order.product.list' ,
+
+            'target': 'new',
+            'res_id':self.id,
+            }
 		
+	def action_close(self):
+		return {
+            'type':'ir.actions.act_window_close'
+        }
 
 
 

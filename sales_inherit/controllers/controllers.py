@@ -19,3 +19,5 @@
 #         return http.request.render('sales_inherit.object', {
 #             'object': obj
 #         })
+
+
