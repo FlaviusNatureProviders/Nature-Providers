@@ -1,38 +1,37 @@
 <odoo>
-  <data>
-    <!-- explicit list view definition -->
+    <data>
+        <!-- explicit list view definition -->
 
         <record id="sale_order_view_form" model="ir.ui.view">
-          <field name="name">sale.order.form.inherit.coupon</field>
-          <field name="model">sale.order</field>
-          <field name="inherit_id" ref="sale.view_order_form" />
-          <field name="priority">10</field>
-          <field name="arch" type="xml">
-             <xpath expr="//group[@name='order_details']" position="after">
-                 <div class="oe_right">
-                     <button name="sale_product_view_inherit"
-                             string="View Products" type="object"  groups="base.group_user"/>
-                 </div>
-             </xpath>
-          </field>
-     </record>
+            <field name="name">sale.order.form.inherit.coupon</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_form" />
+            <field name="priority">10</field>
+            <field name="arch" type="xml">
+                <xpath expr="//group[@name='order_details']" position="after">
+                    <div class="oe_right">
+                        <button name="sale_product_view_inherit" string="View Products" type="object" groups="base.group_user"/>
+                    </div>
+                </xpath>
+            </field>
+        </record>
 
 
-     <record id="view_sales_order_product_inherit_filter" model="ir.ui.view">
+        <record id="view_sales_order_product_inherit_filter" model="ir.ui.view">
             <field name="name">sale.order.list.product.select</field>
             <field name="model">sale.order.product.list</field>
             <field name="priority" eval="15"/>
             <field name="arch" type="xml">
                 <search string="Search ProductsOrder">
                     <field name="product_id" string="Name"/>
-                
-               </search>
+
+                </search>
             </field>
         </record>
 
 
 
-    <record id="view_order_inherit_kanban" model="ir.ui.view">
+        <record id="view_order_inherit_kanban" model="ir.ui.view">
             <field name="name">sale.order.product.list.kanban</field>
             <field name="model">sale.order.product.list</field>
             <field name="arch" type="xml">
@@ -43,7 +42,8 @@
                     <field name='id'/>
                     <field name="partner_id"/>
                     <field name="product_image"/>
-                   
+                    <field name="product_count"/>
+
                     <templates>
 
                         <t t-name="kanban-box">
@@ -56,17 +56,21 @@
                                             </div>
                                         </div>
                                         <div class="col-md-5">
-                                            <strong><field name="product_id"/></strong>
+                                            <strong>
+                                                <field name="product_id"/>
+                                            </strong>
                                         </div>
                                         <div contenteditable="false" class="css_quantity input-group d-inline-flex me-2 mb-2 align-middle input-group-lg" style="max-height:35px;">
                                             <a class="btn btn-link js_add_cart_json" href="#" name="remove_product" type="object">
-                                                        <i class="fa fa-minus"></i>
+                                                <i class="fa fa-minus"></i>
                                             </a>
                                             <span style="min-width: 50px;border: solid #c6c6c6 1px;text-align: center;padding-top: 5px;">
-                                            <field type="text" class="form-control quantity text-center" name="product_count" />
+                                            <a style="background:transparent;border:none!important;" name="add_quantity_manually" type="object">
+                                                <field type="text" class="form-control quantity text-center" name="product_count" /></a>
                                             </span>
+
                                             <a class="btn btn-link float_left js_add_cart_json" href="#" name="add_product" type="object">
-                                                        <i class="fa fa-plus"></i>
+                                                <i class="fa fa-plus"></i>
                                             </a>
                                         </div>
                                     </div>
@@ -79,15 +83,15 @@
                                 </div>
                             </div>
                         </t>
-                </templates>
+                    </templates>
                 </kanban>
             </field>
-    </record>
+        </record>
 
 
 
 
-     <record id="view_order_inherit_tree" model="ir.ui.view">
+        <record id="view_order_inherit_tree" model="ir.ui.view">
             <field name="name">sale.order.product.list.tree</field>
             <field name="model">sale.order.product.list</field>
             <field name="priority">2</field>
@@ -98,36 +102,67 @@
                     </header>
                     <field name="name" invisible="1"/>
                     <field name="product_id" />
-                    
+
                 </tree>
             </field>
         </record>
 
-    <record id="view_order_inherit_form" model="ir.ui.view">
+        <record id="product_quantity_popup" model="ir.ui.view">
+            <field name="name">sale.order.product.quantity</field>
+            <field name="model">sale.order.product.list</field>
+            <field name="priority">5</field>
+            <field name="arch" type="xml">
+                <form>
+                    <header>
+                        <button style="font-weight:bold;font-size:15px;" string="Set Quantity" disabled="true"/>
+                    </header>
+                    <field name="product_count" placeholder="Set Quantity"/>
+                </form>
+                <style>
+                .modal-header{
+                    display:none;
+                }
+                .modal-dialog.modal-lg{
+                height : 35% !important;
+                width:20% !important;
+                }
+                </style>
+                <footer>
+                    <field name="id" invisible="1"/>
+                    <button string="Create" name="action_close" type="object" class="btn-primary" attrs="{'invisible': [('id', '!=', False)]}"/>
+                    <button string="Save" name="action_close" type="object" class="btn-primary" attrs="{'invisible': [('id', '=', False)]}"/>
+
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+
+            </field>
+        </record>
+
+        <record id="view_order_inherit_form" model="ir.ui.view">
             <field name="name">sale.order.inherit.form</field>
             <field name="model">sale.order.product.list</field>
             <field name="arch" type="xml">
-              <form string="Product List">
+                <form string="Product List">
 
-                <sheet>
-                    <group>
-                        <field name="sale_order_id" invisible="1"/>
-                        <field name="name" invisible="1"/>
-                        <field name="product_id"/>
-                        <field name="sale_order_id" invisible="1"/>
-                        <field name="partner_id" invisible="1"/>
-                        <field name="product_image" widget="image" style="height:100px !important;width: 100px !important;"/>
-                        
-                    </group>
-                    
-                </sheet>
-            </form>
-        </field>
-    </record>
+                    <sheet>
+                        <group>
+                            <field name="sale_order_id" invisible="1"/>
+                            <field name="name" invisible="1"/>
+                            <field name="product_id"/>
+                            <field name="sale_order_id" invisible="1"/>
+                            <field name="partner_id" invisible="1"/>
+                            <field name="product_image" widget="image" style="height:100px !important;width: 100px !important;"/>
+
+                        </group>
+
+                    </sheet>
+                </form>
+            </field>
+        </record>
 
 
 
-    <record id="action_inherit_orders" model="ir.actions.act_window">
+        <record id="action_inherit_orders" model="ir.actions.act_window">
             <field name="name">Product views</field>
             <field name="type">ir.actions.act_window</field>
             <field name="res_model">sale.order.product.list</field>
@@ -137,24 +172,24 @@
             <!-- <field name="domain">[]]</field> -->
             <field name="help" type="html">
                 <p>
-             </p>
+                </p>
             </field>
         </record>
 
-    <record id="sale_order_action_view_order_inherit_tree" model="ir.actions.act_window.view">
+        <record id="sale_order_action_view_order_inherit_tree" model="ir.actions.act_window.view">
             <field name="sequence" eval="1"/>
             <field name="view_mode">tree</field>
             <field name="view_id" ref="sales_inherit.view_order_inherit_tree"/>
             <field name="act_window_id" ref="action_inherit_orders"/>
         </record>
 
-    <record id="sale_order_inherit_action_view_order_form" model="ir.actions.act_window.view">
+        <record id="sale_order_inherit_action_view_order_form" model="ir.actions.act_window.view">
             <field name="sequence" eval="3"/>
             <field name="view_mode">form</field>
             <field name="view_id" ref="sales_inherit.view_order_inherit_form"/>
             <field name="act_window_id" ref="action_inherit_orders"/>
         </record>
-    <record id="sale_order_inherit_action_view_order_kanban" model="ir.actions.act_window.view">
+        <record id="sale_order_inherit_action_view_order_kanban" model="ir.actions.act_window.view">
             <field name="sequence" eval="3"/>
             <field name="view_mode">kanban</field>
             <field name="view_id" ref="sales_inherit.view_order_inherit_kanban"/>
@@ -174,8 +209,8 @@
     </record>
 -->
 
-    <!-- actions opening views on models -->
-<!--
+        <!-- actions opening views on models -->
+        <!--
     <record model="ir.actions.act_window" id="sales_inherit.action_window">
       <field name="name">sales_inherit window</field>
       <field name="res_model">sales_inherit.sales_inherit</field>
@@ -183,8 +218,8 @@
     </record>
 -->
 
-    <!-- server action to the one above -->
-<!--
+        <!-- server action to the one above -->
+        <!--
     <record model="ir.actions.server" id="sales_inherit.action_server">
       <field name="name">sales_inherit server</field>
       <field name="model_id" ref="model_sales_inherit_sales_inherit"/>
@@ -199,21 +234,19 @@
     </record>
 -->
 
-    <!-- Top menu item -->
-<!--
+        <!-- Top menu item -->
+        <!--
     <menuitem name="sales_inherit" id="sales_inherit.menu_root"/>
 -->
-    <!-- menu categories -->
-<!--
+        <!-- menu categories -->
+        <!--
     <menuitem name="Menu 1" id="sales_inherit.menu_1" parent="sales_inherit.menu_root"/>
     <menuitem name="Menu 2" id="sales_inherit.menu_2" parent="sales_inherit.menu_root"/>
 -->
-    <!-- actions -->
-<!--
-    <menuitem name="List" id="sales_inherit.menu_1_list" parent="sales_inherit.menu_1"
-              action="sales_inherit.action_window"/>
-    <menuitem name="Server to list" id="sales_inherit" parent="sales_inherit.menu_2"
-              action="sales_inherit.action_server"/>
+        <!-- actions -->
+        <!--
+    <menuitem name="List" id="sales_inherit.menu_1_list" parent="sales_inherit.menu_1" action="sales_inherit.action_window"/>
+    <menuitem name="Server to list" id="sales_inherit" parent="sales_inherit.menu_2" action="sales_inherit.action_server"/>
 -->
-  </data>
+    </data>
 </odoo>
