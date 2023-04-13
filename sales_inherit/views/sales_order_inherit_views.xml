@@ -118,22 +118,34 @@
                     </header>
                     <field name="product_count" placeholder="Set Quantity"/>
                 </form>
-                <style>
-                .modal-header{
-                    display:none;
-                }
-                .modal-dialog.modal-lg{
-                height : 35% !important;
-                width:20% !important;
-                }
-                </style>
-                <footer>
-                    <field name="id" invisible="1"/>
-                    <button string="Create" name="action_close" type="object" class="btn-primary" attrs="{'invisible': [('id', '!=', False)]}"/>
-                    <button string="Save" name="action_close" type="object" class="btn-primary" attrs="{'invisible': [('id', '=', False)]}"/>
+        
+            </field>
+        </record>
 
-                    <button string="Cancel" class="btn-secondary" special="cancel"/>
-                </footer>
+        <record id="product_popup_quantity_inherited" model="ir.ui.view">
+            <field name="name">sale.order.product.list.inherited</field>
+            <field name="model">sale.order.product.list</field>
+            <field name="inherit_id" ref="sales_inherit.product_quantity_popup"/>
+            <field name="arch" type="xml">
+
+                <xpath expr="." position="inside">
+                    <style>
+                        .modal-header{
+                            display:none;
+                        }
+
+                        .modal-dialog.modal-lg{
+                            height : 35% !important;
+                            width:20% !important;
+                        }
+                    </style>
+                     <footer>
+                        <field name="id" invisible="1"/>
+                        <button string="Create" name="action_close" type="object" class="btn-primary" attrs="{'invisible': [('id', '!=', False)]}"/>
+                        <button string="Save" name="action_close" type="object" class="btn-primary" attrs="{'invisible': [('id', '=', False)]}"/>
+                        <button string="Cancel" class="btn-secondary" special="cancel"/> 
+                    </footer>
+                </xpath>
 
             </field>
         </record>

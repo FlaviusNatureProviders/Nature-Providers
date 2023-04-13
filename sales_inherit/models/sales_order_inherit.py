@@ -14,11 +14,7 @@ class SaleOrder(models.Model):
 	
 	def sale_product_view_inherit(self):
 		stock_id=self.env['sale.order.product.list']
-
-		sale_order=self.env['sale.order.line']
 		product_id = self.env['product.product']
-	
-
 		stock_product_move_id=self.env['sale.order.line'].search([('order_id.partner_id','=',self.partner_id.id)])
 		product_move_list=stock_id.search([('partner_id','=',self.partner_id.id)])
 
@@ -27,12 +23,12 @@ class SaleOrder(models.Model):
 
 		list_difference = [item for item in product_move_history_list if item not in stock_product_list]
 
-
+		print ("list list_difference------",list_difference)
 		
-
 
 		if list_difference:
 			stock_move_list = product_id.search([('id','in',list_difference)])
+			print ("-----------------stock_move_list",stock_move_list)
 			for products in stock_move_list:
 				stock_id.create({'name':products.name,'product_id':products.id,'partner_id':self.partner_id.id,'product_image':products.product_tmpl_id.image_1920})
 
@@ -73,6 +69,7 @@ class SaleOrderProductList(models.Model):
 
 	def add_to_sales_order(self):
 		order_id=self.env.context.get('sale_order')
+		print (order_id,'================')
 		line_env = self.env['sale.order.line']
 		if self.product_count != 0:
 			new_line = line_env.create({
@@ -108,9 +105,11 @@ class SaleOrderProductList(models.Model):
 
 
 	def add_product(self):
+		print ("haiii bro")
 		self.product_count=self.product_count+1
 
 	def remove_product(self):
+		print ("remove bro")
 		if self.product_count != 0:
 			self.product_count=self.product_count-1
 
