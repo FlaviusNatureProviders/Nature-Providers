@@ -62,7 +62,7 @@ class SaleOrderProductList(models.Model):
 	stock_view_ids= fields.One2many('stock.product.list', 'stock_view_id', string='Product Order Lines')
 	sale_order_id = fields.Many2one('sale.order',string="Sales Order")
 	partner_id=fields.Many2one('res.partner',string="Customer")
-	product_image = fields.Binary(string='Product image')
+	product_image = fields.Binary(string='Product image',related='product_id.product_tmpl_id.image_1920')
 	product_count = fields.Integer(string="Count", readonly=False)
 
 	
