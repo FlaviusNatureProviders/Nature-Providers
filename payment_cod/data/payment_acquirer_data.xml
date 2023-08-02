@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+
+    <record id="payment_acquirer_cod" model="payment.acquirer">
+        <field name="name">Cash on delivery</field>
+        <field name="sequence">60</field>
+        <field name="provider">cod</field>
+        <!-- <field name="image_128" type="base64" file="payment_test/static/src/img/test_logo.jpg"/> -->
+        <field name="module_id" ref="base.module_payment_cod"/>
+        <field name="description" type="html">
+            <p>
+               Providing Cash on delivery.
+            </p>
+        </field>
+    </record>
+
+    <record id="payment_method_cod" model="account.payment.method">
+        <field name="name">Cash on delivery</field>
+        <field name="code">cod</field>
+        <field name="payment_type">inbound</field>
+    </record>
+
+</odoo>
