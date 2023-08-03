@@ -1,11 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
 
-    <template id="verified_token_checkmark_cod" inherit_id="payment.verified_token_checkmark">
-        <xpath expr="//t[@name='payment_test_hook']" position="replace">
-            <t t-if="token.provider=='cod'">
-                <span class="badge badge-warning">COD Token</span>
-            </t>
+    <template id="payment_footer_inherit_cod" inherit_id="website_sale.payment_footer">
+        <xpath expr="//button[@name='o_payment_submit_button']" position="replace">
+            <button name="o_payment_submit_button"
+                    type="submit"
+                    class="btn btn-primary"
+                    disabled="true"
+                    data-icon-class="fa-chevron-right">
+                <t t-esc="submit_button_label_cod"/> SEND ORDER <i class="fa fa-chevron-right"/>
+            </button>
+        </xpath>
+    </template>
+
+    <template id="payment_inherit_cod" inherit_id="website_sale.payment">
+        <xpath expr="//h3[@class='mb24']" position="replace">
+            
+            <h3 class="mb24">Send Order or Pay </h3>
+ 
         </xpath>
     </template>
 
