@@ -16,9 +16,9 @@
     'category': 'Hidden',
     'version': '0.1',
 
-    'depends': ['payment'],
+    'depends': ['payment','website_sale'],
     'data': [
-        # 'views/payment_token.xml',
+        'views/payment_token.xml',
         'views/payment_cod_template.xml',
         'data/payment_acquirer_data.xml',
     ],
