@@ -21,4 +21,15 @@
         </xpath>
     </template>
 
+    <template id="inherit_website_sale_checkout" inherit_id="website_sale.cart">
+            <!-- Find the specific button using xpath -->
+            <xpath expr="//a[@role='button' and contains(@class, 'btn-primary')]" position="replace">
+                <!-- Modify the button attributes as needed -->
+                <a role="button" t-if="website_sale_order and website_sale_order.website_order_line" class="btn btn-primary float-right d-none d-xl-inline-block" href="/shop/checkout?express=1">
+                    <span class="">Pay or Send order </span>
+                    <span class="fa fa-chevron-right" />
+                </a>
+            </xpath>
+        </template>
+
 </odoo>
