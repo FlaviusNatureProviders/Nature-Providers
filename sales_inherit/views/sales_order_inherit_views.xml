@@ -13,21 +13,30 @@
                         <button name="sale_product_view_inherit" string="View Products" type="object" groups="base.group_user"/>
                     </div>
                 </xpath>
+                <!-- add new image field in sales order line tree view -->
+                <xpath expr="//notebook/page/field[@name='order_line']/tree/field[@name='product_template_id']" position="before">
+
+                    <field name="image_product" widget="image" readonly='1'/>
+
+                </xpath>
             </field>
         </record>
 
 
-        <record id="view_sales_order_product_inherit_filter" model="ir.ui.view">
-            <field name="name">sale.order.list.product.select</field>
-            <field name="model">sale.order.product.list</field>
-            <field name="priority" eval="15"/>
-            <field name="arch" type="xml">
-                <search string="Search ProductsOrder">
-                    <field name="product_id" string="Name"/>
-
-                </search>
-            </field>
-        </record>
+        <record id="view_sales_order_product_search_filter" model="ir.ui.view">
+        <field name="name">sale.order.list.product.search</field>
+        <field name="model">sale.order.product.list</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="product_id"/>
+                <field name="categ_id"/>
+                <group expand="0" string="Group By..">
+                    <filter name="categ_id" string="Categories"
+                        domain="[]" context="{'group_by': 'categ_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
 
 
 
@@ -43,6 +52,7 @@
                     <field name="partner_id"/>
                     <field name="product_image"/>
                     <field name="product_count"/>
+                    <field name="categ_id"/>
 
                     <templates>
 
@@ -58,6 +68,8 @@
                                         <div class="col-md-5">
                                             <strong>
                                                 <field name="product_id"/>
+                                                <br/>
+                                                <field name="categ_id"/>
                                             </strong>
                                         </div>
                                         <div contenteditable="false" class="css_quantity input-group d-inline-flex me-2 mb-2 align-middle input-group-lg" style="max-height:35px;">
@@ -102,6 +114,7 @@
                     </header>
                     <field name="name" invisible="1"/>
                     <field name="product_id" />
+                    <field name="categ_id" />
 
                 </tree>
             </field>

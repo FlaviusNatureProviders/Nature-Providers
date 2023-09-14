@@ -24,8 +24,10 @@ class SaleOrder(models.Model):
 
 		list_difference = [item for item in product_move_history_list if item not in stock_product_list]
 
+
 		if list_difference:
 			stock_move_list = product_id.search([('id','in',list_difference)])
+
 			for products in stock_move_list:
 				stock_id.create({'name':products.name,'product_id':products.id,'partner_id':self.partner_id.id,'product_image':products.product_tmpl_id.image_1920})
 
@@ -48,8 +50,12 @@ class SaleOrder(models.Model):
 		}
 
 
-        
-		
+class SaleOrder(models.Model):
+	_inherit = 'sale.order.line'
+
+	image_product = fields.Binary('Images',related='product_template_id.image_1920')
+
+
 
 class SaleOrderProductList(models.Model):
 	_name = "sale.order.product.list"
@@ -61,6 +67,8 @@ class SaleOrderProductList(models.Model):
 	partner_id=fields.Many2one('res.partner',string="Customer")
 	product_image = fields.Binary(string='Product image',related='product_id.product_tmpl_id.image_1920')
 	product_count = fields.Integer(string="Count", readonly=False)
+	categ_id = fields.Many2one('product.category',related='product_id.product_tmpl_id.categ_id', store=True)
+
 
 	
 
@@ -74,6 +82,7 @@ class SaleOrderProductList(models.Model):
 	                            'product_uom_qty':self.product_count
 	                            })            
 			new_line.product_id_change()
+			new_line._onchange_discount()
 			self.product_count =0
 
 	def add_quantity_manually(self):
@@ -101,11 +110,9 @@ class SaleOrderProductList(models.Model):
 
 
 	def add_product(self):
-		print ("haiii bro")
 		self.product_count=self.product_count+1
 
 	def remove_product(self):
-		print ("remove bro")
 		if self.product_count != 0:
 			self.product_count=self.product_count-1
 
@@ -121,6 +128,7 @@ class SaleOrderProductList(models.Model):
 	                            'order_id': order_id
 	                            })            
 				new_line.product_id_change()
+				new_line._onchange_discount()
 			form_id = self.env.ref('sale.view_order_form', False)
 			tree_id = self.env.ref('sale.view_order_tree', False)
 
