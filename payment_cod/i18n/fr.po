@@ -1,0 +1,106 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* payment_cod
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 15.0+e-20220111\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2023-08-07 07:05+0000\n"
+"PO-Revision-Date: 2023-08-07 07:05+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: payment_cod
+#: model_terms:ir.ui.view,arch_db:payment_cod.inherit_website_sale_checkout
+msgid ""
+"<span class=\"\">Pay or Send order </span>\n"
+"                    <span class=\"fa fa-chevron-right\"/>"
+msgstr "payyy"
+
+#. module: payment_cod
+#: model:ir.model.fields.selection,name:payment_cod.selection__payment_acquirer__provider__cod
+msgid "COD"
+msgstr ""
+
+#. module: payment_cod
+#: model:account.payment.method,name:payment_cod.payment_method_cod
+#: model:payment.acquirer,name:payment_cod.payment_acquirer_cod
+msgid "Cash on delivery"
+msgstr ""
+
+#. module: payment_cod
+#: code:addons/payment_cod/models/payment_transaction.py:0
+#, python-format
+msgid "No transaction found matching reference %s."
+msgstr ""
+
+#. module: payment_cod
+#: model:ir.model,name:payment_cod.model_payment_acquirer
+msgid "Payment Acquirer"
+msgstr "Intermédiaire de paiement"
+
+#. module: payment_cod
+#: model:ir.model,name:payment_cod.model_account_payment_method
+msgid "Payment Methods"
+msgstr "Méthodes de paiements"
+
+#. module: payment_cod
+#: model:ir.model,name:payment_cod.model_payment_transaction
+msgid "Payment Transaction"
+msgstr "Transaction"
+
+#. module: payment_cod
+#: model_terms:payment.acquirer,done_msg:payment_cod.payment_acquirer_cod
+msgid "Placed your order successfully! Thank you<br>"
+msgstr "Vous avez passé votre commande avec succès ! Merci"
+
+#. module: payment_cod
+#: model:ir.model.fields,field_description:payment_cod.field_payment_acquirer__provider
+msgid "Provider"
+msgstr "Fournisseur"
+
+#. module: payment_cod
+#: model_terms:ir.ui.view,arch_db:payment_cod.payment_footer_inherit_cod
+msgid "SEND ORDER <i class=\"fa fa-chevron-right\"/>"
+msgstr ""
+
+#. module: payment_cod
+#: model_terms:ir.ui.view,arch_db:payment_cod.payment_inherit_cod
+msgid "Send Order or Pay"
+msgstr ""
+
+#. module: payment_cod
+#: model:ir.model.fields,help:payment_cod.field_payment_acquirer__provider
+msgid "The Payment Service Provider to use with this acquirer"
+msgstr ""
+
+#. module: payment_cod
+#: model_terms:ir.ui.view,arch_db:payment_cod.cod_inline_form
+msgid "You placed your order successfully"
+msgstr ""
+
+#. module: payment_cod
+#: model_terms:payment.acquirer,auth_msg:payment_cod.payment_acquirer_cod
+msgid "Your payment has been authorized."
+msgstr ""
+
+#. module: payment_cod
+#: model_terms:payment.acquirer,cancel_msg:payment_cod.payment_acquirer_cod
+msgid "Your payment has been cancelled."
+msgstr ""
+
+#. module: payment_cod
+#: model_terms:payment.acquirer,pending_msg:payment_cod.payment_acquirer_cod
+msgid ""
+"Your payment has been successfully processed but is waiting for approval."
+msgstr ""
+
+#. module: payment_cod
+#: model_terms:ir.ui.view,arch_db:payment_cod.inline_form
+msgid "comments"
+msgstr ""
