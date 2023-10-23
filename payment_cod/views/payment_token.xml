@@ -3,6 +3,7 @@
 
     <template id="payment_footer_inherit_cod" inherit_id="website_sale.payment_footer">
         <xpath expr="//button[@name='o_payment_submit_button']" position="replace">
+            <!-- <div class="float-right mt-2"> -->
             <button name="o_payment_submit_button"
                     type="submit"
                     class="btn btn-primary"
@@ -10,14 +11,15 @@
                     data-icon-class="fa-chevron-right">
                 <t t-esc="submit_button_label_cod"/> SEND ORDER <i class="fa fa-chevron-right"/>
             </button>
+        <!-- </div> -->
         </xpath>
     </template>
 
     <template id="payment_inherit_cod" inherit_id="website_sale.payment">
         <xpath expr="//h3[@class='mb24']" position="replace">
-            
+            <!-- <div class="float-right mt-2"> -->
             <h3 class="mb24">Send Order or Pay </h3>
- 
+        <!-- </div> -->
         </xpath>
     </template>
 
@@ -31,5 +33,8 @@
                 </a>
             </xpath>
         </template>
+
+
+
 
 </odoo>

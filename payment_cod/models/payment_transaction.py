@@ -19,6 +19,7 @@ class PaymentTransaction(models.Model):
 
         :return: None
         """
+        print ("======self==========",self)
         super()._send_payment_request()
         if self.provider != 'cod':
             return
@@ -65,12 +66,71 @@ class PaymentTransaction(models.Model):
         print ("Successwwwwwwwwwwwwwwwwwwwwwwww")
         self._set_done()  # Dummy transactions are always successful
         print ("Successddddddddddddddddddddd")
-        if self.tokenize:
-            token = self.env['payment.token'].create({
-                'acquirer_id': self.acquirer_id.id,
-                'name': payment_utils.build_token_name(payment_details_short=data['cc_summary']),
-                'partner_id': self.partner_id.id,
-                'acquirer_ref': 'Cash on delivery acquirer reference',
-                'verified': True,
-            })
-            self.token_id = token.id
+        # if self.tokenize:
+        #     token = self.env['payment.token'].create({
+        #         'acquirer_id': self.acquirer_id.id,
+        #         'name': payment_utils.build_token_name(payment_details_short=data['cc_summary']),
+        #         'partner_id': self.partner_id.id,
+        #         'acquirer_ref': 'Cash on delivery acquirer reference',
+        #         'verified': True,
+        #     })
+        #     self.token_id = token.id
+
+    def _reconcile_after_done(self):
+        
+        print ("=-=&&&&&&&&&& inside tx &&&&&&&&")
+        result = super(PaymentTransaction,self)._reconcile_after_done()
+        return result
+
+    def _create_payment(self, **extra_create_values):
+        """Create an `account.payment` record for the current transaction.
+        If the transaction is linked to some invoices, their reconciliation is done automatically.
+
+        Note: self.ensure_one()
+
+        :param dict extra_create_values: Optional extra create values
+        :return: The created payment
+        :rtype: recordset of `account.payment`
+        """
+        self.ensure_one()
+
+        print ("===============pay123111111111ment created from here===============",self.acquirer_id.name)
+        # self.ensure_one()
+
+        if self.acquirer_id.name != 'Cash on delivery':
+
+            payment_method_line = self.acquirer_id.journal_id.inbound_payment_method_line_ids.filtered(lambda l: l.code == self.provider)
+            payment_values = {
+                'amount': abs(self.amount),  # A tx may have a negative amount, but a payment must >= 0
+                'payment_type': 'inbound' if self.amount > 0 else 'outbound',
+                'currency_id': self.currency_id.id,
+                'partner_id': self.partner_id.commercial_partner_id.id,
+                'partner_type': 'customer',
+                'journal_id': self.acquirer_id.journal_id.id,
+                'company_id': self.acquirer_id.company_id.id,
+                'payment_method_line_id': payment_method_line.id,
+                'payment_token_id': self.token_id.id,
+                'payment_transaction_id': self.id,
+                'ref': self.reference,
+                **extra_create_values,
+            }
+            payment = self.env['account.payment'].create(payment_values)
+            payment.action_post()
+
+            # Track the payment to make a one2one.
+            self.payment_id = payment
+
+            print ("===============payment created from here===============",payment,payment.name)
+
+            if self.invoice_ids:    
+                self.invoice_ids.filtered(lambda inv: inv.state == 'draft').action_post()
+
+                (payment.line_ids + self.invoice_ids.line_ids).filtered(
+                    lambda line: line.account_id == payment.destination_account_id
+                    and not line.reconciled
+                ).reconcile()
+
+        return
+
+        # return payment
+        # return super(PaymentTransaction, self)._create_payment(**extra_create_values)
