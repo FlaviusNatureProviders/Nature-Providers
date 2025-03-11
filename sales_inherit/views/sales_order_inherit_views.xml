@@ -62,7 +62,7 @@
                                                 <field name="categ_id"/>
                                             </strong>
                                         </div>
-                                        <div contenteditable="false"
+                                        <!--<div contenteditable="false"
                                              class="css_quantity input-group d-inline-flex me-2 mb-2 align-middle input-group-lg"
                                              style="max-height:35px;">
                                             <a class="btn-link js_add_cart_json" href="#" name="remove_product"
@@ -80,7 +80,7 @@
                                                name="add_product" type="object">
                                                 <i class="fa fa-plus"> </i>
                                             </a>
-                                        </div>
+                                        </div>-->
                                     </div>
                                 </div>
                                 <hr></hr>
