@@ -39,7 +39,7 @@ class SaleOrder(models.Model):
             'views': [(tree.id, 'list'), (form.id, 'form'), (kanban.id, 'kanban')],
             'res_model': 'sale.order.product.list',
             'target': 'current',
-            'domain': [('partner_id', '=', self.partner_id.id)],
+            'domain': [('partner_id', '=', self.partner_id.id), ('product_id.active', '=', True)],
             'context': {
                 'default_partner_id': self.partner_id.id,
                 'sale_order': self.id

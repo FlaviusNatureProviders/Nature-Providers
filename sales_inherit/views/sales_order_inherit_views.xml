@@ -62,28 +62,28 @@
                                                 <field name="categ_id"/>
                                             </strong>
                                         </div>
-                                        <!--<div contenteditable="false"
+                                        <div contenteditable="false"
                                              class="css_quantity input-group d-inline-flex me-2 mb-2 align-middle input-group-lg"
-                                             style="max-height:35px;">
-                                            <a class="btn-link js_add_cart_json" href="#" name="remove_product"
-                                               type="object">
+                                             style="max-height:35px;margin-top:15px;">
+                                            <a role="button" class="btn-link js_add_cart_json" href="#" name="remove_product"
+                                               type="object" style="margin-top:10px;">
                                                 <i class="fa fa-minus"> </i>
                                             </a>
-                                            <span style="min-width: 50px;border: solid #c6c6c6 1px;text-align: center;padding-top: 5px;">
-                                                <a style="background:transparent;border:none!important;"
+                                            <span style="margin-left:10px;margin-right:10px;min-width:50px;text-align:center;padding-top:5px;">
+                                                <a role="button" style="background:transparent;border:none!important;"
                                                    name="add_quantity_manually" type="object">
                                                     <field type="text" class="form-control quantity text-center"
                                                            name="product_count"/>
                                                 </a>
                                             </span>
-                                            <a class="btn-link float_left js_add_cart_json" href="#"
-                                               name="add_product" type="object">
+                                            <a role="button" class="btn-link float_left js_add_cart_json" href="#"
+                                               name="add_product" type="object" style="margin-top:10px;">
                                                 <i class="fa fa-plus"> </i>
                                             </a>
-                                        </div>-->
+                                        </div>
                                     </div>
                                 </div>
-                                <hr></hr>
+                                <hr/>
                                 <div class="d-flex">
                                     <button name="add_to_sales_order" type="object"
                                             class="btn btn-primary o-kanban-button-new oe_highlight"
