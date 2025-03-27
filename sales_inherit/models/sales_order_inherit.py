@@ -55,6 +55,7 @@ class SaleOrderLine(models.Model):
 
 class SaleOrderProductList(models.Model):
     _name = "sale.order.product.list"
+    _description = "Sale Order Product List"
 
     name = fields.Char(string='Name')
     product_id = fields.Many2one('product.product', string="Product Name")
@@ -130,8 +131,9 @@ class SaleOrderProductList(models.Model):
 
 class StockProductList(models.Model):
     _name = "stock.product.list"
+    _description = "Stock Product List"
 
     name = fields.Char(string='Name')
     product_id = fields.Many2one('product.product', string="Product Name")
-    stock_view_id = fields.Many2one('sale.order.product.list', string="Product Name")
+    stock_view_id = fields.Many2one('sale.order.product.list', string="Product Stock Name")
     select = fields.Boolean(string="Select")
