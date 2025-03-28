@@ -34,9 +34,9 @@ class SaleOrder(models.Model):
         return {
             'name': 'Product view',
             'type': 'ir.actions.act_window',
-            'view_type': 'form',
-            'view_mode': 'list,kanban,form',
-            'views': [(tree.id, 'list'), (form.id, 'form'), (kanban.id, 'kanban')],
+            'view_type': 'kanban',
+            'view_mode': 'kanban,list,form',
+            'views': [(kanban.id, 'kanban'), (tree.id, 'list'), (form.id, 'form')],
             'res_model': 'sale.order.product.list',
             'target': 'current',
             'domain': [('partner_id', '=', self.partner_id.id), ('product_id.active', '=', True)],
